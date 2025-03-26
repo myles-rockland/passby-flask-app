@@ -162,7 +162,7 @@ def get_player_spc():
 
     player_spc = players_data[player_id]["seconds_per_click"]
 
-    return player_spc, 200
+    return jsonify(player_spc), 200
 
 @app.route('/set_player_spc', methods=['POST'])
 def set_player_spc():
