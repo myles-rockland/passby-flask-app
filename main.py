@@ -30,7 +30,8 @@ def generate_player_id():
         "location": location,
         "timestamp": time.time(),
         "incoming_friend_requests": {},
-        "outgoing_friend_requests": {}
+        "outgoing_friend_requests": {},
+        "seconds_per_click": 6/30
     }
 
     print(players_data)
@@ -153,6 +154,25 @@ def respond_to_friend_request():
     print(f"{players_data[recipient_id]['Name']} {players_data[recipient_id]['incoming_friend_requests'][sender_id]} {players_data[sender_id]['Name']}'s friend request") # "A accepted/declined B's friend request"
 
     return "Friend request processed!", 200
+
+@app.route('/get_player_spc', methods=['POST'])
+def get_player_spc():
+    data = request.get_json()
+    player_id = data.get("player_id")
+
+    player_spc = players_data[player_id]["seconds_per_click"]
+
+    return player_spc, 200
+
+@app.route('/set_player_spc', methods=['POST'])
+def set_player_spc():
+    data = request.get_json()
+    player_id = data.get("player_id")
+    seconds_per_click = data.get("seconds_per_click")
+
+    players_data[player_id]["seconds_per_click"] = seconds_per_click
+
+    return "Player SPC set!", 200
 
 if __name__ == '__main__':
     serve(app, host="0.0.0.0", port=5000)
